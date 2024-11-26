@@ -1,0 +1,13 @@
+   -name: Check if Ubuntu server needs rebooting
+       -hosts: all
+        gather_facts: yes
+        tasks:
+        -name: Get system uptime
+         command: uptime
+         register: system_uptime
+    -name: Check if reboot is needed
+         set_fact:
+         needs_reboot: "{{ system_uptime.stdout.split(' ')[2] | int }} <= {{ kernel_update.update_available | int }}"
+         -name: Reboot if needed
+          reboot:
+          when: needs_reboot | bool
