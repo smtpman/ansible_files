@@ -1,0 +1,12 @@
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Reboot (Ubuntu)
+    tags: always
+    reboot:
+    when: ansible_distribution == "Ubuntu"
+  - name: Reboot (Debian)
+    tags: always
+    reboot:
+    when: ansible_distribution == "Debian"
